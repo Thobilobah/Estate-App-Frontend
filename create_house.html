@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create House</title>
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/style2.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="./js/datatables.css" />
+    <style>
+        .dropdown-menu {
+            background-color: #293b5f;
+            border: none;
+        }
+        .dropdown-item {
+            color: #FFF;
+            padding: 0.25rem 1.5rem;
+        }
+        .dropdown-item:hover {
+            background-color: rgba(255, 255, 255, .075);
+            color: #FFF;
+        }
+        .sidebar-nav .dropdown-menu {
+            position: static;
+            float: none;
+        }
+        .create-btn {
+            margin-left: 20px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container-1">
+        <aside id="sidebar">
+            <input type="checkbox" name="" id="toggler">
+            <label for="toggler" class="toggle-btn">
+                <i class="lni lni-grid-alt"></i>
+            </label>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link">
+                        <i class="lni lni-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li class="sidebar-item dropdown">
+                    <a href="#taskSubmenu" class="sidebar-link dropdown-toggle" data-toggle="dropdown">
+                        <i class="lni lni-agenda"></i>
+                        <span>Task</span>
+                    </a>
+                    <ul class="dropdown-menu" id="taskSubmenu">
+                        <li class="sidebar-item dropdown">
+                            <a href="#" class="sidebar-link dropdown-toggle" data-toggle="dropdown">Create Properties</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="create_street.html" class="sidebar-link">Create Street</a>
+                                </li>
+                                <li>
+                                    <a href="create_house.html" class="sidebar-link">Create House</a>
+                                </li>
+                                <li>
+                                    <a href="create_apartment.html" class="sidebar-link">Create Apartment</a>
+                                </li>
+                                <li>
+                                    <a href="create_landlord.html" class="sidebar-link">Create Landlord</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link">
+                        <i class="lni lni-protection"></i>
+                        <span>Auth</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link">
+                        <i class="lni lni-layout"></i>
+                        <span>Packages</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link">
+                        <i class="lni lni-popup"></i>
+                        <span>Notification</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link">
+                        <i class="lni lni-cog"></i>
+                        <span>Setting</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link">
+                        <i class="lni lni-layout"></i>
+                        <span>Page</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <a href="#" class="sidebar-link">
+                    <i class="lni lni-exit"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+        <div class="main">
+            <div class="dashboard-navbar">
+                <form action="#">
+                    <div class="nav-search">
+                        <input type="text" class="search-query" placeholder="Search...">
+                        <button class="btn" type="button">Search</button>
+                    </div>
+                </form>
+                <li>
+                    <button class="btn btn-primary create-btn" id="createHouseButton">Create House</button>
+                </li>
+                <div class="navbar-content">
+                    <ul class="main-nav">
+                        <li class="user-link">
+                            <a href="#">
+                                <img src="/img/account.png" alt="Profile" class="avatar">
+                            </a>
+                            <div class="user-link-dropdown">
+                                <a href="#" class="dropdown-item">Profile</a>
+                                <a href="#" class="dropdown-item">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Content -->
+            <div class="content">
+                <h2>Houses</h2>
+                <table id="posts" class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>House No</th>
+                            <th>Street Name</th>
+                            <th>isRented</th>
+                            <th>No of Apartment</th>
+                            <th>House Type</th>
+                            <th>Rent Price</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- New houses will be added here -->
+                    </tbody>
+                </table>
+                <pre id="outputElement"></pre>
+            </div>
+            <footer>
+                <div class="footer-wrap">
+                    <div class="copyright-text">
+                        <p>© Copyright 2023 by <strong>Taiwo</strong></p>
+                    </div>
+                    <ul class="social-icons">
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <!-- Modal for Creating House -->
+    <div class="modal" id="createHouseModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create House</h5>
+                    <button type="button" class="close" aria-label="Close">&times;</button>
+                </div>
+                <div class="contact-card">
+                    <div class="modal-body">
+                        <form id="createHouseForm">
+                            <div class="form-group">
+                                <label for="houseId">House ID</label>
+                                <input type="number" id="houseId" name="houseId" class="form-control" placeholder="Enter house ID" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="houseNo">House Number</label>
+                                <input type="text" id="houseNo" name="houseNo" class="form-control" placeholder="Enter house number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="streetName">Street Name</label>
+                                <input type="text" id="streetName" name="streetName" class="form-control" placeholder="Enter Street Name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="isRented">Is Rented</label>
+                                <select id="isRented" name="isRented" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="true">true</option>
+                                    <option value="false">false</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="noOfApartment">No of Apartments</label>
+                                <input type="number" id="noOfApartment" name="noOfApartment" class="form-control" placeholder="Enter Number of Apartments in House" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="houseType">House Type</label>
+                                <input type="text" id="houseType" name="houseType" class="form-control" placeholder="Enter House Type" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="rentPrice">Rent Price</label>
+                                <input type="number" id="rentPrice" name="rentPrice" class="form-control" placeholder="Enter Rent Price" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/datatables.js"></script>
+    <script src="/js/house.js"></script>
+</body>
+</html>
