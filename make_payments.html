@@ -1,16 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar using CSS</title>
+    <title>Create Street</title>
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
     <link rel="stylesheet" href="/css/style2.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="./js/datatables.css" />
+    <style>
+        .dropdown-menu {
+            background-color: #293b5f;
+            border: none;
+        }
+        .dropdown-item {
+            color: #FFF;
+            padding: 0.25rem 1.5rem;
+        }
+        .dropdown-item:hover {
+            background-color: rgba(255, 255, 255, .075);
+            color: #FFF;
+        }
+        .sidebar-nav .dropdown-menu {
+            position: static;
+            float: none;
+        }
+        .create-btn {
+            margin-left: 20px;
+        }
+    </style>
 </head>
-
 <body>
-    <div class="container">
+    <div class="container-1">
         <aside id="sidebar">
             <input type="checkbox" name="" id="toggler">
             <label for="toggler" class="toggle-btn">
@@ -29,8 +50,8 @@
                         <span>Task</span>
                     </a>
                     <ul class="dropdown-menu" id="taskSubmenu">
-                        <li>
-                            <a href="#" class="sidebar-link" onclick="showMakePayment()">Payment</a>
+                        <li class="sidebar-item dropdown">
+                            <a href="#" class="sidebar-link dropdown-toggle" data-toggle="dropdown">Payment</a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <a href="make_payments.html" class="sidebar-link">Make Payment</a>
@@ -85,6 +106,9 @@
                         <button class="btn" type="button">Search</button>
                     </div>
                 </form>
+                <li>
+                    <button class="btn btn-primary create-btn" id="createStreetButton">Make Payment</button>
+                </li>
                 <div class="navbar-content">
                     <ul class="main-nav">
                         <li class="user-link">
@@ -96,80 +120,30 @@
                                 <a href="#" class="dropdown-item">Logout</a>
                             </div>
                         </li>
+                        
                     </ul>
                 </div>
             </div>
+            <!-- Content -->
             <div class="content">
-                <h2>Statistics & Reports</h2>
-                <div class="dashboard-card">
-                    <div class="card">
-                        <h6 class="title">Memebrs Progress</h6>
-                        <h6 class="amount">$72,540</h6>
-                        <div class="badge">
-                            <span class="text-success-bg"> +6.85% </span>
-                            <span class="badge-text">Since Last Month</span>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h6 class="title">Authors Earninigs</h6>
-                        <h6 class="amount">$72,540</h6>
-                        <div class="badge">
-                            <span class="text-success-bg"> +6.85% </span>
-                            <span class="badge-text">Since Last Month</span>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h6 class="title">Total Users</h6>
-                        <h6 class="amount">$72,540</h6>
-                        <div class="badge">
-                            <span class="text-success-bg"> +6.85% </span>
-                            <span class="badge-text">Since Last Month</span>
-                        </div>
-                    </div>
-                </div>
-                <h2>Avg. Agent Earnings</h2>
-                <div style="overflow-x:auto;">
-                    <table id="posts">
-                        <thead>
-                            <tr>
-                                <th style="width:5%">SN</th>
-                                <th style="width:45%">Name</th>
-                                <th style="width:45%">Email</th>
-                                <th style="width:5%">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>John Doe</td>
-                                <td>john@example.com</td>
-                                <td><a href="#">Edit</a></td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Jane Smith</td>
-                                <td>jane@example.com</td>
-                                <td><a href="#">Edit</a></td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Bob Johnson</td>
-                                <td>bob@example.com</td>
-                                <td><a href="#">Edit</a></td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>Alice Williams</td>
-                                <td>alice@example.com</td>
-                                <td><a href="#">Edit</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div id="create-properties-content" style="display:none;">
-                    <h2>Create Properties</h2>
-                    <p>Content for Create Properties goes here.</p>
-                </div>
+                <h2>Streets</h2>
+                <table id="posts" class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>InvoiceRefNo</th>
+                            <th>Amount Paid</th>
+                            <th>Payment Method</th>
+                            <th>Payment Status</th>
+                            <th>Payment Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- New streets will be added here -->
+                    </tbody>
+                </table>
+                <pre id="outputElement"></pre>
             </div>
             <footer>
                 <div class="footer-wrap">
@@ -185,11 +159,40 @@
             </footer>
         </div>
     </div>
-    <script>
-        function showMakePayment() {
-            document.getElementById('create-properties-content').style.display = 'block';
-        }
-    </script>
-</body>
+    <!-- Modal for Creating Street -->
+    <div class="modal" id="createStreetModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create Street</h5>
+                    <button type="button" class="close" aria-label="Close">&times;</button>
+                </div>
+                <div class="contact-card">
+                    <div class="modal-body">
+                        <form id="createStreetForm">
+                            <input type="hidden" id="editStreetId">
+                            <div class="form-group">
+                                <label for="streetId">Street Id</label>
+                                <input type="text" class="form-control" id="streetId" name="streetId" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="streetName">Street Name</label>
+                                <input type="text" class="form-control" id="streetName" name="streetName" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="mySubmit">Submit</button>
+                            <button type="submit" class="btn btn-primary hideButton" id="myUpdate">Update</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc6VVv+8ewsGV3+a5xZxiwIyc+36G+6CLiYQSZeg+" crossorigin="anonymous"></script> -->
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/datatables.js"></script>
+    <script src="/js/street.js"></script>
+</body>
 </html>
