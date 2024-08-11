@@ -103,8 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            const responseData = await response.json();
-            outputElement.textContent = JSON.stringify(responseData, null, 2);
+            
+            outputElement.textContent = JSON.stringify(response, null, 2);
 
             form.reset();
             fetchStreets();

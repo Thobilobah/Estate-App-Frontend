@@ -107,7 +107,7 @@
                     </div>
                 </form>
                 <li>
-                    <button class="btn btn-primary create-btn" id="createStreetButton">Make Payment</button>
+                    <button class="btn btn-primary create-btn" id="createMakePaymentButton">Make Payment</button>
                 </li>
                 <div class="navbar-content">
                     <ul class="main-nav">
@@ -126,7 +126,7 @@
             </div>
             <!-- Content -->
             <div class="content">
-                <h2>Streets</h2>
+                <h2>Make Payments</h2>
                 <table id="posts" class="table">
                     <thead>
                         <tr>
@@ -160,7 +160,7 @@
         </div>
     </div>
     <!-- Modal for Creating Street -->
-    <div class="modal" id="createStreetModal">
+    <div class="modal" id="createMakePaymentModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -169,16 +169,20 @@
                 </div>
                 <div class="contact-card">
                     <div class="modal-body">
-                        <form id="createStreetForm">
-                            <input type="hidden" id="editStreetId">
+                        <form id="createMakePaymentForm">
+                            <input type="hidden" id="editMakePaymentId">
                             <div class="form-group">
-                                <label for="streetId">Street Id</label>
-                                <input type="text" class="form-control" id="streetId" name="streetId" required>
+                                <label for="MakePaymentId">Make Payment Id</label>
+                                <input type="text" class="form-control" id="MakePaymentId" name="MakePaymentId" required>
                             </div>
                             <div class="form-group">
-                                <label for="streetName">Street Name</label>
-                                <input type="text" class="form-control" id="streetName" name="streetName" required>
-                            </div>
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>                            
+                            <div class="form-group">
+                                <label for="amountPaid">Amount</label>
+                                <input type="number" class="form-control" id="amountPaid" name="amountPaid" required>
+                            </div>                            
                             <button type="submit" class="btn btn-primary" id="mySubmit">Submit</button>
                             <button type="submit" class="btn btn-primary hideButton" id="myUpdate">Update</button>
                         </form>
@@ -193,6 +197,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc6VVv+8ewsGV3+a5xZxiwIyc+36G+6CLiYQSZeg+" crossorigin="anonymous"></script> -->
     <script src="./js/jquery.min.js"></script>
     <script src="./js/datatables.js"></script>
-    <script src="/js/street.js"></script>
+    <script src="/js/make_payments.js"></script>
 </body>
 </html>
