@@ -41,15 +41,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify(MakePaymentData)
             });
+
+            var body = await response.json();
+            console.log('Body below:')
+            console.log(body);
+
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            const MakePayment = await response.json();
-            console.log('Created Payment:', MakePayment); // Log the created apartment
-            outputElement.textContent = `Payment created: ${JSON.stringify(MakePayment)}`;
+            console.log('Created Payment:', body); // Log the created apartment
+            outputElement.textContent = `Payment created: ${JSON.stringify(body)}`;
+
+            var win = window.open(body.authorization_url, '_blank');
+            win.focus();
             
             form.reset(); // Reset the form after successful submission
-            fetchApartments(); // Refresh the apartment list
+            //fetchApartments(); // Refresh the apartment list
             modal.style.display = 'none';
         } catch (error) {
             console.error('Create error:', error);
