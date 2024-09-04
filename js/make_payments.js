@@ -34,13 +34,16 @@ document.addEventListener('DOMContentLoaded', () => {
     async function createPayment() {
         const paymentApiUrl = 'https://localhost:7079/api/Payment/Create'; // Adjust endpoint as necessary
         const formData = new FormData(form);
-
+    
         const makePaymentData = {
             id: formData.get('MakePaymentId'),
             email: formData.get('email'),
-            amountPaid: formData.get('amountPaid')
+            amount: formData.get('amount'),
+            dateCreated: new Date().toISOString() // Automatically set the current date
         };
-
+    
+        console.log('Sending payment data:', makePaymentData); // Log data being sent to the server
+    
         try {
             const paymentResponse = await fetch(paymentApiUrl, {
                 method: 'POST',
@@ -49,25 +52,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify(makePaymentData)
             });
-
+    
             if (!paymentResponse.ok) {
+                const errorBody = await paymentResponse.json();
+                console.error('Error response body:', errorBody);
                 throw new Error('Network response was not ok');
             }
-
+    
             const paymentBody = await paymentResponse.json();
             console.log('Created Payment:', paymentBody);
             outputElement.textContent = `Payment created: ${JSON.stringify(paymentBody)}`;
-
-            // Open the payment authorization URL
+    
             var win = window.open(paymentBody.authorization_url, '_blank');
-            win.focus();
+if (win) {
+    win.focus();
+} else {
+    console.warn("Failed to open the authorization URL. Possibly blocked by a popup blocker.");
+}
 
             // After payment is created, save the payment information
             await createPaymentInfo(paymentBody);
-
+    
             form.reset(); // Reset the form after successful submission
             modal.style.display = 'none';
-
+    
             // Fetch and update payment info after payment is made
             fetchPaymentInfo();
         } catch (error) {
@@ -75,23 +83,30 @@ document.addEventListener('DOMContentLoaded', () => {
             outputElement.textContent = `Create error: ${error.message}`;
         }
     }
+    
 
     async function createPaymentInfo(paymentBody) {
-        const paymentInfoApiUrl = 'https://localhost:7079/api/PaymentInfo/Create'; // Adjust endpoint as necessary
-
+        const paymentInfoApiUrl = 'https://localhost:7079/api/PaymentInfo/Create'; 
         // Extract necessary data for PaymentInfo
         const urlParams = new URLSearchParams(window.location.search);
         const trxref = urlParams.get('trxref') || "default_trxref"; // Default to prevent undefined
         const reference = urlParams.get('reference') || "default_reference"; // Default to prevent undefined
-
+        
+        // Use the extracted values in your paymentInfo data
         const paymentInfoData = {
-            id: paymentBody.id, // Add the id from paymentBody
-            invoiceRefNo: `${trxref} ${reference}`,
-            amountPaid: paymentBody.amountPaid,
-            paymentMethod: paymentBody.paymentMethod || "Online", // Add a default payment method
-            paymentStatus: paymentBody.paymentStatus ? "Successful" : "Failed",
-            paymentDate: new Date().toISOString() // Assuming the current date is the payment date
+            id: paymentBody.id, 
+            email: paymentBody.email,
+            amount: paymentBody.amount,
+            reference: paystackResponse.data.reference,
+            RefNo: `${trxref} ${reference}`,
+            message: paystackResponse.message,
+            authorization_url: paymentBody.authorization_url,
+            access_code: paystackResponse.data.access_code,
+            status: "Pending", // Set status to pending
+            dateCreated: new Date().toISOString(), 
+            dateCompleted: paymentBody.dateCompleted
         };
+        
 
         console.log('Creating Payment Info with data:', paymentInfoData); // Log data being sent to PaymentInfo
 
@@ -121,23 +136,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchPaymentInfo() {
         const apiUrl = 'https://localhost:7079/api/PaymentInfo/All';
-
+    
         try {
             const response = await fetch(apiUrl);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            const payments = await response.json();
-
+            let payments = await response.json();
+    
+            // Loop through the payments to set the `RefNo` and `paymentStatus` if missing
+            const urlParams = new URLSearchParams(window.location.search);
+            const trxref = urlParams.get('trxref') || "default_trxref"; // Default to prevent undefined
+    
+            payments = payments.map(payment => {
+                // Set RefNo if not present
+                if (!payment.RefNo) {
+                    payment.RefNo = trxref;
+                }
+                // Set status to 'Pending' if not present
+                if (!payment.paymentStatus) {
+                    payment.paymentStatus = 'Pending';
+                }
+                return payment;
+            });
+    
             $("#posts").DataTable({
                 data: payments,
                 columns: [
                     { data: "id" },
-                    { data: "invoiceRefNo" },
-                    { data: "amountPaid" },
-                    { data: "paymentMethod" },
+                    { data: "RefNo" },
+                    { data: "amount" },
                     { data: "paymentStatus" },
-                    { data: "paymentDate" },
+                    { data: "dateCreated" },
+                    { data: "dateCompleted" },
                     {
                         data: null,
                         render: function (data, type, row) {
@@ -152,4 +183,5 @@ document.addEventListener('DOMContentLoaded', () => {
             outputElement.textContent = `Error: ${error.message}`;
         }
     }
+    
 });
